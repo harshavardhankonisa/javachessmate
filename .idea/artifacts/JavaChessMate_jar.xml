@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="JavaChessMate:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/JavaChessMate_jar</output-path>
+    <root id="archive" name="JavaChessMate.jar">
+      <element id="module-output" name="JavaChessMate" />
+    </root>
+  </artifact>
+</component>
