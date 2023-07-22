@@ -3,43 +3,38 @@ package org.chessengine.services;
 import org.chessengine.models.ChessboardState;
 
 public class FunctionalConversion {
-    public static void algebraToMove(String command, String moves) {
+    public static void convertAlgebraicToMove(String command, String moves) {
         int start = 0, end = 0;
         int from = (command.charAt(0) - 'a') + (8 * ('8' - command.charAt(1)));
         int to = (command.charAt(2) - 'a') + (8 * ('8' - command.charAt(3)));
         for (int i = 0; i < moves.length(); i += 4) {
-            if (Character.isDigit(moves.charAt(i + 3))) {// 'regular' move
-                start = (Character.getNumericValue(moves.charAt(i + 0)) * 8)
-                        + (Character.getNumericValue(moves.charAt(i + 1)));
-                end = (Character.getNumericValue(moves.charAt(i + 2)) * 8)
-                        + (Character.getNumericValue(moves.charAt(i + 3)));
-            } else if (moves.charAt(i + 3) == 'P') {// pawn promotion
+            boolean isRegularMove = Character.isDigit(moves.charAt(i + 3));
+            int regularStart = (Character.getNumericValue(moves.charAt(i)) * 8) + (Character.getNumericValue(moves.charAt(i + 1)));
+            if (isRegularMove) {
+                start = regularStart;
+                end = (Character.getNumericValue(moves.charAt(i + 2)) * 8) + (Character.getNumericValue(moves.charAt(i + 3)));
+            } else if (moves.charAt(i + 3) == 'P') {
                 if (Character.isUpperCase(moves.charAt(i + 2))) {
-                    start = Long
-                            .numberOfTrailingZeros(Moves.FileMasks8[moves.charAt(i + 0) - '0'] & Moves.RankMasks8[1]);
+                    start = Long.numberOfTrailingZeros(Moves.FileMasks8[moves.charAt(i) - '0'] & Moves.RankMasks8[1]);
                     end = Long.numberOfTrailingZeros(Moves.FileMasks8[moves.charAt(i + 1) - '0'] & Moves.RankMasks8[0]);
                 } else {
-                    start = Long
-                            .numberOfTrailingZeros(Moves.FileMasks8[moves.charAt(i + 0) - '0'] & Moves.RankMasks8[6]);
+                    start = Long.numberOfTrailingZeros(Moves.FileMasks8[moves.charAt(i) - '0'] & Moves.RankMasks8[6]);
                     end = Long.numberOfTrailingZeros(Moves.FileMasks8[moves.charAt(i + 1) - '0'] & Moves.RankMasks8[7]);
                 }
-            } else if (moves.charAt(i + 3) == 'E') {// en passant
+            } else if (moves.charAt(i + 3) == 'E') {
                 if (moves.charAt(i + 2) == 'W') {
                     start = Long
-                            .numberOfTrailingZeros(Moves.FileMasks8[moves.charAt(i + 0) - '0'] & Moves.RankMasks8[3]);
+                            .numberOfTrailingZeros(Moves.FileMasks8[moves.charAt(i) - '0'] & Moves.RankMasks8[3]);
                     end = Long.numberOfTrailingZeros(Moves.FileMasks8[moves.charAt(i + 1) - '0'] & Moves.RankMasks8[2]);
                 } else {
                     start = Long
-                            .numberOfTrailingZeros(Moves.FileMasks8[moves.charAt(i + 0) - '0'] & Moves.RankMasks8[4]);
+                            .numberOfTrailingZeros(Moves.FileMasks8[moves.charAt(i) - '0'] & Moves.RankMasks8[4]);
                     end = Long.numberOfTrailingZeros(Moves.FileMasks8[moves.charAt(i + 1) - '0'] & Moves.RankMasks8[5]);
                 }
             }
             if ((start == from) && (end == to)) {
-                if ((command.charAt(4) == ' ')
-                        || (Character.toUpperCase(command.charAt(4)) == Character.toUpperCase(moves.charAt(i + 2)))) {
-                    if (Character.isDigit(moves.charAt(i + 3))) {// 'regular' move
-                        start = (Character.getNumericValue(moves.charAt(i)) * 8)
-                                + (Character.getNumericValue(moves.charAt(i + 1)));
+                if ((command.charAt(4) == ' ') || (Character.toUpperCase(command.charAt(4)) == Character.toUpperCase(moves.charAt(i + 2)))) {
+                    if (isRegularMove) {
                         if (((1L << start) & ChessboardState.WK) != 0) {
                             ChessboardState.CWK = false;
                             ChessboardState.CWQ = false;
@@ -77,14 +72,14 @@ public class FunctionalConversion {
             }
         }
     }
-    
-    public static String moveToAlgebra(String move) {
+
+    public static String convertMoveToAlgebra(String move) {
         String append = "";
         int start = 0, end = 0;
-        if (Character.isDigit(move.charAt(3))) {// 'regular' move
+        if (Character.isDigit(move.charAt(3))) {
             start = (Character.getNumericValue(move.charAt(0)) * 8) + (Character.getNumericValue(move.charAt(1)));
             end = (Character.getNumericValue(move.charAt(2)) * 8) + (Character.getNumericValue(move.charAt(3)));
-        } else if (move.charAt(3) == 'P') {// pawn promotion
+        } else if (move.charAt(3) == 'P') {
             if (Character.isUpperCase(move.charAt(2))) {
                 start = Long.numberOfTrailingZeros(Moves.FileMasks8[move.charAt(0) - '0'] & Moves.RankMasks8[1]);
                 end = Long.numberOfTrailingZeros(Moves.FileMasks8[move.charAt(1) - '0'] & Moves.RankMasks8[0]);
@@ -92,8 +87,8 @@ public class FunctionalConversion {
                 start = Long.numberOfTrailingZeros(Moves.FileMasks8[move.charAt(0) - '0'] & Moves.RankMasks8[6]);
                 end = Long.numberOfTrailingZeros(Moves.FileMasks8[move.charAt(1) - '0'] & Moves.RankMasks8[7]);
             }
-            append = "" + Character.toLowerCase(move.charAt(2));
-        } else if (move.charAt(3) == 'E') {// en passant
+            append = String.valueOf(Character.toLowerCase(move.charAt(2)));
+        } else if (move.charAt(3) == 'E') {
             if (move.charAt(2) == 'W') {
                 start = Long.numberOfTrailingZeros(Moves.FileMasks8[move.charAt(0) - '0'] & Moves.RankMasks8[3]);
                 end = Long.numberOfTrailingZeros(Moves.FileMasks8[move.charAt(1) - '0'] & Moves.RankMasks8[2]);

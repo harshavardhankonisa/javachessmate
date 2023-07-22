@@ -4,44 +4,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TreeNode {
-    private List<TreeNode> children = null;
-    private String value;
-    private int score;
-    private TreeNode sonChoosen = null;
+    private final List<TreeNode> children;
+    private final String value;
+    private final int score;
+    private TreeNode sonChosen = null;
 
-    public TreeNode(String value,int score)
-    {
+    public TreeNode(String value, int score) {
         this.children = new ArrayList<>();
         this.value = value;
         this.score = score;
     }
 
-    public void addChild(TreeNode child)
-    {
+    public void addChild(TreeNode child) {
         children.add(child);
     }
 
-    public int getScore(){
+    public int getScore() {
         return score;
     }
 
-    public void setScore(int score){
-        this.score = score;
-    }
-
-    public List<TreeNode> getChildren(){
+    public List<TreeNode> getChildren() {
         return children;
     }
 
-    public String getValue(){
+    public String getValue() {
         return value;
     }
 
-    public void setSonChoosen(TreeNode sonChoosen) {
-        this.sonChoosen = sonChoosen;
+    public void setSonChosen(TreeNode sonChosen) {
+        this.sonChosen = sonChosen;
     }
 
-    public TreeNode getSonChoosen() {
-        return sonChoosen;
+    public TreeNode getSonChosen() {
+        return sonChosen;
     }
 }
