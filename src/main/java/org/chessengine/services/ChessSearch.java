@@ -6,7 +6,7 @@ import org.chessengine.models.TreeNode;
 import java.util.List;
 
 public class ChessSearch {
-    public static int maxTime = 990;
+    public static int maxTime = 990; // time in milliseconds for adjusting depth
 
     public static String search(long startTime) {
 
@@ -15,7 +15,7 @@ public class ChessSearch {
 
         TreeNode root = new TreeNode("", 0);
 
-        int depth = 1;
+        int depth = 1; // depth of the chess engine
 
         while (System.currentTimeMillis() - startTime < maxTime) {
             ChessSearch.treeConstruction(ChessboardState.WhiteToMove, depth + 1, root, ChessboardState.WP,
