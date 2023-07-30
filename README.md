@@ -69,4 +69,14 @@ Before you begin, ensure you have the following prerequisites:
    - Now, you can play a game against JavaChessMate and experience the power of our AI-based Chess engine!
 Have fun playing and experimenting with JavaChessMate in Arena GUI!
 
-
+## Remember This(My Developer Env is different from production environment)
+1. **In ChessSearch Class**
+   U can setup the engine strength by changing depth and time required for it give the best performance. But in dev environment i needed to change it for easy debugging
+   - If use dev environment then keep depth to 1 and max_time to 5000.
+2. **Files Handeling(JavaClasses)**
+   I have sorted the files for faster code writing. So, i don't need to worry about large code bases and future implementation.
+   - I have MVC based architecture which i am most familiar with.
+   - Controller: I have the UCI interface written here
+   - Services: Where i have functions that assist my UCI
+   - Models: Where i have my Java Interfaces, Objects, Constants and all.
+3. **Jar File i have given is of my Prod Env**
